@@ -3,7 +3,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <title>Ingresar Nota</title>
+    <title>Pagina principal</title>
 </head>
 <style>
     html {
@@ -92,7 +92,7 @@
     /* FORM TYPOGRAPHY*/
 
     input[type=button], input[type=submit], input[type=reset]  {
-    
+        background-color: #56baed;
         border: none;
         color: white;
         padding: 15px 80px;
@@ -114,10 +114,10 @@
     }
 
     input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover  {
-        background-color:rgba(180,239,98,1);
+        background-color: #39ace7;
     }
 
-    input[type=button]:active, input[type=submit]:active, input[type=reset]:active  {
+    input[type=button]:active,select, input[type=submit]:active, input[type=reset]:active  {
         -moz-transform: scale(0.95);
         -webkit-transform: scale(0.95);
         -o-transform: scale(0.95);
@@ -125,7 +125,7 @@
         transform: scale(0.95);
     }
 
-    input[type=text] {
+    input[type=text],select {
         background-color: #f6f6f6;
         border: none;
         color: #0d0d0d;
@@ -152,6 +152,14 @@
     }
 
     input[type=text]:placeholder {
+        color: #cccccc;
+    }
+    select:focus {
+        background-color: #fff;
+        border-bottom: 2px solid #5fbae9;
+    }
+
+    select:placeholder {
         color: #cccccc;
     }
 
@@ -270,39 +278,72 @@
     #icon {
         width:60%;
     }
+    .select{
+        text-align: center;
+        text-align-last: center;
+        -moz-text-align-last: center;
+    }
 
 </style>
 
 <body>
 
 <div class="wrapper fadeInDown">
-    <div id="formContent">
+    <div id="formContent" style="background-color: white">
+        <nav class="navbar navbar-light bg-light">
+            <a class="navbar-brand" href="/">
+                <img src="https://image.flaticon.com/icons/svg/2223/2223672.svg" width="30" height="30" alt="">
+            </a>
+        </nav>
         <!-- Tabs Titles -->
 
         <!-- Icon -->
         <div class="formFooterHeader">
             <div>
-                <img src="https://i.pinimg.com/originals/b9/49/c8/b949c86a570df07a7440abe39405834c.gif" width="130" height="100" class="d-inline-block align-top" align="center" alt="">
+                <img src="https://carrerainglesuce.files.wordpress.com/2019/05/papers.gif" width="150" height="130" class="d-inline-block align-top" align="center" alt="">
             </div>
-            <p th:text="${name}"></p>
-            <h2><strong>Ingresar Nota</strong></h2>
+            <p th:text="${nameCourse}"></p>
+            <h2><strong>Agregar Notas</strong></h2>
         </div>
 
-        <!-- Login Form -->
+        <!-- Form -->
         <form method="post" id="myForm" th:action="@{/exito}">
-            <input name="codigo" hidden value="insert">
+            <input name="codigo" hidden value="addCualification">
+            <input name="txt_delete" hidden th:value="${nameCourse}">
             <input name="txt_idCurso" th:value="${id}" hidden>
             <input hidden value="buscar" name="codigo">
-            <input type="text" class="fadeIn second" name="txt_name" placeholder="Estudiante" required>
-            <input type="text" class="fadeIn second" name="txt_desc" placeholder="Actividad" required>
-            <input type="text" class="fadeIn second" name="txt_cal" placeholder="Nota (10.00)" required>
+            <select class="form-control form-control-lg fadeIn second select" name="slec_students" >
+                <option value="0">Student</option>
+                <option th:each="students : ${lista}" th:text="${students.name}" th:value="${students.id_student}"></option>
+            </select>
+            <select class="form-control form-control-lg fadeIn second select" name="slec_activity">
+                <option value="0">Activity</option>
+                <option th:each="activitys : ${activity}" th:text="${activitys.name} + ' (' +${activitys.qualification}+'p)'" th:value="${activitys.id_activity}"></option>
+            </select>
+            <input type="text" class="fadeIn second" name="txt_cal" placeholder="Calificacion (10.00)" required inputmode="numeric" pattern="[+]?[0-9]*[.,]?[0-9]+" >
             <div class="form-group">
-                <input type="submit" class="fadeIn fourth btn btn-success" value="Agregar" >
+                <input type="submit" class="fadeIn fourth" value="Agregar" >
                 <div class="row ">
                 </div>
-                <a href="/" class="btn btn-danger fadeIn fourth" role="button">Cancelar</a>
             </div>
-
+            <div th:if="${addCurso == 'exito'}" class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>SUCCESS!</strong> Se ha agregado la nota de la actividad al estudiante.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div th:if="${addCurso == 'errorValidation'}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>ERROR!</strong> La nota que ha ingresado es mayor a la nota de actividad, por favor ingresar una nota menor o igual a la nota de actividad.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div th:if="${addCurso == 'errorSelect'}" class="alert alert-warning alert-dismissible fade show" role="alert">
+                <strong>WARNING!</strong> No se ha seleccionado un estudiante o una actividad de la clase.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
         </form>
     </div>
 </div>

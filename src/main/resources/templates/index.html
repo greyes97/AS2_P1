@@ -28,7 +28,7 @@
         font-weight: 600;
         text-transform: uppercase;
         display:inline-block;
-        margin: 10px 8px 10px 8px;
+        margin: 40px 8px 10px 8px;
         color: #cccccc;
     }
 
@@ -105,7 +105,7 @@
         box-shadow: 0 10px 30px 0 rgba(95,186,233,0.4);
         -webkit-border-radius: 5px 5px 5px 5px;
         border-radius: 5px 5px 5px 5px;
-        margin: 0px 20px 5px 20px;
+        margin: 5px 20px 40px 20px;
         -webkit-transition: all 0.3s ease-in-out;
         -moz-transition: all 0.3s ease-in-out;
         -ms-transition: all 0.3s ease-in-out;
@@ -275,47 +275,103 @@
 
 <body>
 
+<!-- MODAL BUSCAR CURSO PARA ELIMINAR ACTIVIDAD -->
+<div class="modal fade" id="modalLoginAvatar" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header" style="padding: 0rem 0.02rem">
+                <img src="https://i.pinimg.com/originals/2e/8c/21/2e8c21cc020f2ca30b94304eaaf87fb9.gif" width="298" height="270" align="center"  alt="avatar" class="d-inline-block align-top" >
+            </div>
+            <!--Body-->
+            <div class="modal-body text-center mb-1">
+                <blockquote style="font-size: smaller"><small>Para eliminar una <cite title="Nombre Apellidos">actividad de un curso</cite> primero tiene que <cite><strong>buscar el curso</strong></cite> .</small></blockquote>
+                <h5 class="mt-1 mb-2"></h5>
+                <form method="post" th:action="@{/delete}">
+                    <div class="md-form ml-0 mr-0">
+                        <input type="text" id="form29" name="txt_delete" class="form-control form-control-sm validate ml-0" placeholder="Course name" required>
+                    </div>
+                    <div class="text-center mt-4">
+                        <input type="submit" value="Buscar" class="btn btn-danger">
+                    </div>
+                    <div th:if="${cursoDeleteActivity == 'errorDeleteAc'}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Curso no encontrado!</strong> El curso que ingresaste no esta registrado.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- FINISH MODAL -->
+<!-- MODAL BUSCAR CURSO PARA INGRESAR NOTAS -->
+<div class="modal fade" id="modalLoginAvatar2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel2"
+     aria-hidden="true">
+    <div class="modal-dialog cascading-modal modal-avatar modal-sm" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header" style="padding: 0rem 0.02rem">
+                <img src="https://i.pinimg.com/originals/d3/46/4a/d3464a4351fdf340ccb6bb37c281381a.gif" width="298" height="270" align="center"  alt="avatar" class="d-inline-block align-top" >
+            </div>
+            <!--Body-->
+            <div class="modal-body text-center mb-1">
+                <blockquote style="font-size: smaller"><small>Para agregar <cite title="Nombre Apellidos">una nota a un curso</cite> primero tiene que <cite><strong>buscar el curso</strong></cite> .</small></blockquote>
+
+                <h5 class="mt-1 mb-2"></h5>
+                <form method="post" th:action="@{/AddCualification}">
+                    <div class="md-form ml-0 mr-0">
+                        <input type="text" id="form30" name="txt_delete" class="form-control form-control-sm validate ml-0" placeholder="Course name" required>
+                    </div>
+                    <div class="text-center mt-4">
+                        <input type="submit" value="Buscar" class="btn btn-danger">
+                    </div>
+                    <div th:if="${cursoQualification == 'errorQualification'}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Curso no encontrado!</strong> El curso que ingresaste no esta registrado.
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>
+<!-- FINISH MODAL -->
 <div class="wrapper fadeInDown">
     <div id="formContent">
-        <nav class="navbar navbar-light bg-light">
-            <a class="navbar-brand" href="/">
-                <img src="https://image.flaticon.com/icons/svg/2223/2223672.svg" width="30" height="30" alt="">
-            </a>
-        </nav>
         <!-- Tabs Titles -->
-
         <!-- Icon -->
         <div class="formFooterHeader">
             <div>
-                <img src="https://i.pinimg.com/originals/b9/49/c8/b949c86a570df07a7440abe39405834c.gif" width="130" height="100" class="d-inline-block align-top" align="center" alt="">
+                <img src="https://cdn.dribbble.com/users/291221/screenshots/1425333/helper.gif" width="130" height="100" class="d-inline-block align-top" align="center" alt="">
             </div>
-            <p th:text="${name}"></p>
-            <h2><strong>Agregar Actividad</strong></h2>
+            <p>Agregar actividad a curso</p>
         </div>
 
-        <!-- Login Form -->
-        <form method="post" id="myForm" th:action="@{/exito}">
-            <input name="codigo" hidden value="insert">
-            <input name="txt_delete" hidden th:value="${name}">
-            <input name="txt_idCurso" th:value="${id}" hidden>
+        <!-- Form -->
+        <form method="post" th:action="@{/activity}">
             <input hidden value="buscar" name="codigo">
-            <input type="text" class="fadeIn second" name="txt_name" placeholder="Nombre de Actividad" required>
-            <input type="text" class="fadeIn second" name="txt_desc" placeholder="Descripción" required>
-            <input type="text" class="fadeIn second" name="txt_cal" placeholder="Calificacion (10.00)" required inputmode="numeric" pattern="[-+]?[0-9]*[.,]?[0-9]+">
-            <div class="form-group">
-                <input type="submit" class="fadeIn fourth" value="Agregar" >
-                <div class="row ">
-                </div>
-                <div class="row ">
-                </div>
+            <input type="text" id="login" class="fadeIn second" name="txt_courseName" placeholder="Course name" required>
+            <blockquote style="font-size: smaller"><small>Para agregar una <cite title="Nombre Apellidos">actividad a un curso</cite> primero tiene que <cite><strong>buscar el curso</strong></cite> .</small></blockquote>
+            <input type="submit" class="fadeIn fourth" value="Buscar" >
+            <div th:if="${cursoActivity == 'errorActivity'}" class="alert alert-danger alert-dismissible fade show" role="alert">
+                <strong>Curso no encontrado!</strong> El curso que ingresaste no esta registrado.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </form>
-        <form method="post" th:action="@{/delete}">
-            <input name="txt_delete" hidden th:value="${name}">
-            <div class="form-group">
-                <input type="submit" class="fadeIn fourth" value="Ver actividades" >
-            </div>
-        </form>
+        <div id="formFooter">
+            <a href="#" role="button" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginAvatar" >¿Desea eliminar una actividad? </a>
+            <a href="#" role="button" class="btn btn-default btn-rounded" data-toggle="modal" data-target="#modalLoginAvatar2" >¿Desea ingresar notas? </a>
+        </div>
     </div>
 </div>
 <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -323,3 +379,4 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
 </body>
 </html>
+

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <title>Actividades</title>
+</head>
+<style>
+    /* ANIMATIONS */
+
+    /* Simple CSS3 Fade-in-down Animation */
+    .fadeInDown {
+        -webkit-animation-name: fadeInDown;
+        animation-name: fadeInDown;
+        -webkit-animation-duration: 1s;
+        animation-duration: 1s;
+        -webkit-animation-fill-mode: both;
+        animation-fill-mode: both;
+    }
+
+    @-webkit-keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0);
+        }
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none;
+        }
+    }
+
+    @keyframes fadeInDown {
+        0% {
+            opacity: 0;
+            -webkit-transform: translate3d(0, -100%, 0);
+            transform: translate3d(0, -100%, 0);
+        }
+        100% {
+            opacity: 1;
+            -webkit-transform: none;
+            transform: none;
+        }
+    }
+
+    /* Simple CSS3 Fade-in Animation */
+    @-webkit-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @-moz-keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+    @keyframes fadeIn { from { opacity:0; } to { opacity:1; } }
+
+    .fadeIn {
+        opacity:0;
+        -webkit-animation:fadeIn ease-in 1;
+        -moz-animation:fadeIn ease-in 1;
+        animation:fadeIn ease-in 1;
+
+        -webkit-animation-fill-mode:forwards;
+        -moz-animation-fill-mode:forwards;
+        animation-fill-mode:forwards;
+
+        -webkit-animation-duration:1s;
+        -moz-animation-duration:1s;
+        animation-duration:1s;
+    }
+
+    .fadeIn.first {
+        -webkit-animation-delay: 0.4s;
+        -moz-animation-delay: 0.4s;
+        animation-delay: 0.4s;
+    }
+
+    .fadeIn.second {
+        -webkit-animation-delay: 0.6s;
+        -moz-animation-delay: 0.6s;
+        animation-delay: 0.6s;
+    }
+
+    .fadeIn.third {
+        -webkit-animation-delay: 0.8s;
+        -moz-animation-delay: 0.8s;
+        animation-delay: 0.8s;
+    }
+
+    .fadeIn.fourth {
+        -webkit-animation-delay: 1s;
+        -moz-animation-delay: 1s;
+        animation-delay: 1s;
+    }
+
+    /* Simple CSS3 Fade-in Animation */
+    .underlineHover:after {
+        display: block;
+        left: 0;
+        bottom: -10px;
+        width: 0;
+        height: 2px;
+        background-color: #56baed;
+        content: "";
+        transition: width 0.2s;
+    }
+
+    .underlineHover:hover {
+        color: #0d0d0d;
+    }
+
+    .underlineHover:hover:after{
+        width: 100%;
+    }
+
+
+
+    /* OTHERS */
+
+    *:focus {
+        outline: none;
+    }
+
+    #icon {
+        width:60%;
+    }
+</style>
+<body>
+
+<main class="mt-5 pt-5 wrapper fadeInDown" >
+    <div class="container" id="formContent">
+        <h1><strong th:text="${nameCourse}"></strong></h1>
+        <table class="table table-hover table-dark" style="text-align: center">
+            <thead>
+            <tr>
+                <th scope="col">ID</th>
+                <th scope="col">Activity</th>
+                <th scope="col">Description</th>
+                <th scope="col">Qualification</th>
+                <th scope="col">Action</th>
+            </tr>
+            </thead>
+            <tbody>
+                <input name="codigo" value="delete" hidden>
+                <tr th:if="${lista}" th:each="list : ${lista}">
+                    <th scope="row" th:text="${list.id_activity}"></th>
+                    <td th:text="${list.name}"></td>
+                    <td th:text="${list.description}"></td>
+                    <td th:text="${list.qualification}+'p'"></td>
+                    <td colspan="3">
+                        <form method="post" th:action="@{/deleteEx}">
+                            <input name="txt_eliminar" type="text" th:value="${list.id_activity}" hidden>
+                            <input type="submit" value="Eliminar" class="btn btn-outline-danger">
+                        </form>
+                        <br>
+                        <form th:action="@{/descarga}">
+                            <input name="txt_id" type="text" th:value="${list.id_activity}" hidden>
+                            <input name="txt_nameCourse" type="text" th:value="${nameCourse}" hidden>
+                            <input type="submit" value=".CSV" class="btn btn-outline-success">
+                        </form>
+                    </td>
+                </tr>
+                <tr th:unless="${!lista.empty}">
+                    <td colspan="5" class="text-center">NO HAY NINGUNA ACTIVIDAD</td>
+                </tr>
+
+            </tbody>
+        </table>
+        <div class="input-group" >
+            <div class="input-group-prepend">
+                <a href="/" th:if="${!lista.empty}"><button type="button" class="btn btn-danger">Salir</button></a>
+                <a href="/" th:unless="${!lista.empty}"><button class="btn btn-success">Salir</button></a>
+                <form method="post" th:action="@{/activity}">
+                    <input hidden value="buscar" name="codigo">
+                    <input name="txt_courseName" hidden th:value="${nameCourse}">
+                    <input type="submit" value="Agregar actividad" class="btn btn-success form-control" >
+                </form>
+            </div>
+
+        </div>
+    </div>
+
+</main>
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+
+</body>
+</html>
